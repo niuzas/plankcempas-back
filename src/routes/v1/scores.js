@@ -65,4 +65,22 @@ router.get('/my-scores', isLoggedIn, async (req, res) => {
   }
 });
 
+router.get('/highscores', async (req, res) => {
+  try {
+    const con = await mysql.createConnection(mysqlConfig);
+    const [data] = await con.execute(
+      'SELECT * FROM scores ORDER BY score DESC LIMIT 5',
+    );
+
+    con.end();
+
+    return res.send({ scores: data });
+  } catch (e) {
+    console.log(e);
+    return res
+      .status(500)
+      .send({ error: 'An unexpected error occurred. Please try again' });
+  }
+});
+
 module.exports = router;
