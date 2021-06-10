@@ -29,7 +29,6 @@ router.post('/add-score', isLoggedIn, async (req, res) => {
     const [data] = await con.execute(
       `INSERT INTO scores (user_id, score) VALUES (${score.id}, ${score.score})`,
     );
-
     con.end();
 
     if (data.affectedRows !== 1) {
@@ -53,12 +52,12 @@ router.get('/my-scores', isLoggedIn, async (req, res) => {
     const [data] = await con.execute(
       `SELECT * FROM scores WHERE user_id = ${req.user.id}`,
     );
-
     con.end();
 
     return res.send({ scores: data });
   } catch (e) {
     console.log(e);
+
     return res
       .status(500)
       .send({ error: 'An unexpected error occurred. Please try again' });
@@ -71,7 +70,6 @@ router.get('/highscores', async (req, res) => {
     const [data] = await con.execute(
       'SELECT * FROM scores ORDER BY score DESC LIMIT 5',
     );
-
     con.end();
 
     return res.send({ scores: data });
