@@ -29,7 +29,6 @@ module.exports = {
       req.user = decodedToken;
       return next();
     } catch (e) {
-      console.log(e);
       return res.status(400).send({ error: 'Unauthorized access to site' });
     }
   },
